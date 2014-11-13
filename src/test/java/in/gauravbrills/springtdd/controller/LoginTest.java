@@ -13,10 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import in.gauravbrills.springtdd.config.SpringConfig;
 import in.gauravbrills.springtdd.controller.form.Login;
-import in.gauravbrills.springtdd.model.Benutzer;
+import in.gauravbrills.springtdd.model.LoginDetails;
 import in.gauravbrills.springtdd.service.LoginService;
+import in.gauravbrills.springtdd.spring.SpringConfig;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -80,7 +80,7 @@ public class LoginTest {
 
 	@Test
 	public void testPerformLogin() throws Exception {
-		final Benutzer mockUser = Mockito.mock(Benutzer.class);
+		final LoginDetails mockUser = Mockito.mock(LoginDetails.class);
 		Mockito.when(mockUser.getUsername()).thenReturn("rudi");
 		Mockito.when(mockUser.getPassword()).thenReturn("ratlos");
 		Mockito.when(mockUser.getId()).thenReturn(1l);

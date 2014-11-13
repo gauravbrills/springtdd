@@ -8,7 +8,7 @@
 package in.gauravbrills.springtdd.controller;
 
 import in.gauravbrills.springtdd.controller.form.Login;
-import in.gauravbrills.springtdd.model.Benutzer;
+import in.gauravbrills.springtdd.model.LoginDetails;
 import in.gauravbrills.springtdd.service.LoginService;
  
 import javax.servlet.http.HttpSession;
@@ -51,7 +51,7 @@ public class LoginController {
      */
     @RequestMapping(value="/login.html", method = RequestMethod.POST)
     public String doLogin(final ModelMap map, @ModelAttribute Login login, final HttpSession session) {
-        final Benutzer b = loginService.authenticate(login.getUsername(), login.getPassword());
+        final LoginDetails b = loginService.authenticate(login.getUsername(), login.getPassword());
         if (b != null) {
             map.put("currentuser", b);
             session.setAttribute("currentuser", b);
