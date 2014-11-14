@@ -1,12 +1,16 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * LoginTest.java
+ * 
+ * Copyright Gaurav Rawat 2014
+ *
+ * @author Gaurav Rawat
  */
 package in.gauravbrills.springtdd.controller;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -16,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import in.gauravbrills.springtdd.controller.form.Login;
 import in.gauravbrills.springtdd.model.LoginDetails;
 import in.gauravbrills.springtdd.service.LoginService;
-import in.gauravbrills.springtdd.spring.SpringConfig;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,36 +28,45 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+/**
+ * The Class LoginTest.
+ */
+@RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { SpringConfig.class })
 public class LoginTest {
 
-	@Autowired
-	private WebApplicationContext wac;
-
+	/** The mock mvc. */
 	private MockMvc mockMvc;
 
+	/** The login controller. */
 	@InjectMocks
 	private LoginController loginController;
 
+	/** The mock login service. */
 	@Mock
 	private LoginService mockLoginService;
 
+	/**
+	 * Setup.
+	 */
 	@Before
 	public void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+		// Initalizes Mockito
 		MockitoAnnotations.initMocks(this);
+		// Builds Mock Controllers for Spring Mvc
+		this.mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
 	}
 
+	/**
+	 * Test login.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testLogin() throws Exception {
 		this.mockMvc.perform(get("/login.html")).andExpect(status().isOk())
@@ -62,10 +74,15 @@ public class LoginTest {
 				.andExpect(model().attribute("login", any(Login.class)));
 	}
 
+	/**
+	 * Test perform login wrong creds.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPerformLoginWrongCreds() throws Exception {
 		String username = "rudi";
-		String password = "falsch";
+		String password = "fake";
 
 		Mockito.when(mockLoginService.authenticate(username, password))
 				.thenReturn(null);
@@ -78,6 +95,11 @@ public class LoginTest {
 				.andExpect(view().name("login/failed"));
 	}
 
+	/**
+	 * Test perform login.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testPerformLogin() throws Exception {
 		final LoginDetails mockUser = Mockito.mock(LoginDetails.class);
@@ -103,6 +125,9 @@ public class LoginTest {
 				.andExpect(
 						request().sessionAttribute("currentuser",
 								hasProperty("password", is("ratlos"))));
+
+		Mockito.verify(mockLoginService, times(1)).authenticate(
+				mockUser.getUsername(), mockUser.getPassword());
 	}
 
 }
