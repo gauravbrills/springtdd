@@ -7,10 +7,14 @@
  */
 package in.gauravbrills.springtdd.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.*;
 import in.gauravbrills.springtdd.model.User;
 import in.gauravbrills.springtdd.service.UserService;
 
@@ -27,7 +31,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -59,7 +62,7 @@ public class UserOpRestTest {
 
 	private MediaType contentType = new MediaType(
 			MediaType.APPLICATION_JSON.getType(),
-			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("UTF-8"));
 
 	/**
 	 * Setup.
@@ -117,7 +120,7 @@ public class UserOpRestTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$.name", is("John")))
-				.andExpect(jsonPath("$.title", is("Mr")));
+				.andExpect(jsonPath("$.title", is("Mr"))).andDo(print());
 	}
 
 	@Test
@@ -125,11 +128,11 @@ public class UserOpRestTest {
 		ObjectMapper mapper = new ObjectMapper();
 		User user = new User("Mr", "John", "Doe");
 		Mockito.doNothing().when(userService).save(user);
-		byte[] body = mapper.writeValueAsBytes(user);
-		this.mockMvc.perform(
-				post("/users").contentType(MediaType.APPLICATION_JSON)
-						.characterEncoding("UTF-8")
-						.accept(MediaType.APPLICATION_JSON).content(body))
-				.andExpect(status().isOk());
+		String body = mapper.writeValueAsString(user);
+		this.mockMvc
+				.perform(
+						post("/users").contentType(contentType)
+								.content(body)).andExpect(status().isOk())
+				.andDo(print());
 	}
 }
