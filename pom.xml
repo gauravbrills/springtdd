@@ -13,6 +13,11 @@
 		<jdk.version>1.7</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>4.2.4.Final</hibernate.version>
+		<org.projectlombok.version>1.14.4</org.projectlombok.version>
+		<log4j2.version>2.0-rc2</log4j2.version>
+		<log4j-slf4j.version>2.0</log4j-slf4j.version>
+		<mockito.version>1.10.8</mockito.version>
+		<slf4j-log4j12-version>1.7.5</slf4j-log4j12-version>
 	</properties>
 
 	<!-- Repositories -->
@@ -24,7 +29,6 @@
 		</repository>
 	</repositories>
 
-	<!-- Abhängigkeiten -->
 	<dependencies>
 		<!-- Servlets + JSTL -->
 
@@ -47,12 +51,6 @@
 			<version>1.1.2</version>
 		</dependency>
 
-		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-nop</artifactId>
-			<version>1.5.8</version>
-		</dependency>
 
 
 		<!-- Test Driven Developoment -->
@@ -66,14 +64,14 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>el-impl</artifactId>
-			<version>2.2</version>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path-assert</artifactId>
+			<version>0.8.1</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -114,6 +112,12 @@
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-core</artifactId>
 			<version>3.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -128,7 +132,17 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.0.1.Final</version>
 		</dependency>
-
+		<!-- convertor apis -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${org.projectlombok.version}</version>
+		</dependency>
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -152,7 +166,29 @@
 			<artifactId>hamcrest-all</artifactId>
 			<version>1.3</version>
 		</dependency>
-
+		<!-- logging -->
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-simple</artifactId> 
+			<version>1.7.7</version> </dependency> -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jcl</artifactId>
+			<version>${log4j2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j-slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j2.version}</version>
+		</dependency>
 	</dependencies>
 
 	<!-- Build -->
