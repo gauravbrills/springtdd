@@ -4,28 +4,22 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.ClassUtils;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory;
-import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles3.TilesView;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-@Configuration
 @ComponentScan("in.gauravbrills.springtdd")
+@EnableWebMvc
 @PropertySource({ "classpath:app.properties" })
-public class SpringConfig extends WebMvcConfigurerAdapter {
+public class RestConfig extends WebMvcConfigurerAdapter {
 	/** The Constant DD_MM_YYYY. */
 	private static final String DD_MM_YYYY = "yyyy-MM-dd";
 
@@ -33,30 +27,11 @@ public class SpringConfig extends WebMvcConfigurerAdapter {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			DD_MM_YYYY);
 
-	@Bean(name = "tilesViewResolver")
-	public UrlBasedViewResolver tilesViewResolver() {
-		UrlBasedViewResolver resolver = new UrlBasedViewResolver();
-		resolver.setViewClass(TilesView.class);
-		return resolver;
-	}
-
-	@Bean(name = "tilesConfigurer")
-	public TilesConfigurer tilesConfigurer() {
-		TilesConfigurer configurer = new TilesConfigurer();
-		configurer.setDefinitions("/WEB-INF/tiles.xml");
-		configurer.setPreparerFactoryClass(SpringBeanPreparerFactory.class);
-		return configurer;
-	}
-
 	/**
-	 * Properties.
-	 * 
-	 * @return the property sources placeholder configurer
+	 * Instantiates a new web config.
 	 */
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
-		final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
-		return pspc;
+	public RestConfig() {
+		super();
 	}
 
 	/*
@@ -87,5 +62,4 @@ public class SpringConfig extends WebMvcConfigurerAdapter {
 		messageConverters.add(new ByteArrayHttpMessageConverter());
 		super.configureMessageConverters(messageConverters);
 	}
-
 }
