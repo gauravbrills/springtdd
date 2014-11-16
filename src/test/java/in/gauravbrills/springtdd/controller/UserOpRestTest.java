@@ -135,4 +135,17 @@ public class UserOpRestTest {
 								.content(body)).andExpect(status().isOk())
 				.andDo(print());
 	}
+	
+	@Test
+	public void testSaveUser_failedvalidation() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		User user = new User(null, "John", "Doe");
+		Mockito.doNothing().when(userService).save(user);
+		String body = mapper.writeValueAsString(user);
+		this.mockMvc
+				.perform(
+						post("/users").contentType(contentType)
+								.content(body)).andExpect(status().isBadRequest())
+				.andDo(print());
+	}
 }

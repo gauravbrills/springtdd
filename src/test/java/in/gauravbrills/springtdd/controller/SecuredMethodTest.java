@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -33,6 +34,12 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 public class SecuredMethodTest {
 	@Autowired
 	private UserService userService;
+
+	@Test(expected = AuthenticationCredentialsNotFoundException.class)
+	public void testListUsersWithtUser() throws Exception {
+		assertThat(userService.getAllUsers(), contains(new User("Mr", "Kevin",
+				"Bernard")));
+	}
 
 	@Test
 	@WithMockUser
