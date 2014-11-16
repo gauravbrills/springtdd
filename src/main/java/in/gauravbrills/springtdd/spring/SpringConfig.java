@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -22,6 +24,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Configuration
 @ComponentScan("in.gauravbrills.springtdd")
+@PropertySource({ "classpath:app.properties" })
 public class SpringConfig extends WebMvcConfigurerAdapter {
 	/** The Constant DD_MM_YYYY. */
 	private static final String DD_MM_YYYY = "yyyy-MM-dd";
@@ -43,6 +46,17 @@ public class SpringConfig extends WebMvcConfigurerAdapter {
 		configurer.setDefinitions("/WEB-INF/tiles.xml");
 		configurer.setPreparerFactoryClass(SpringBeanPreparerFactory.class);
 		return configurer;
+	}
+
+	/**
+	 * Properties.
+	 * 
+	 * @return the property sources placeholder configurer
+	 */
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
+		final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
+		return pspc;
 	}
 
 	/*
