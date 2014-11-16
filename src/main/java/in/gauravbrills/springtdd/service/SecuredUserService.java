@@ -8,9 +8,6 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -18,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class SecuredUserService implements UserService {
 
 	@Override
-	@PreAuthorize("authenticated")
+	@Secured("ROLE_USER")
 	public List<User> getAllUsers() {
 		return Arrays.asList(new User[] { new User("Mr", "Kevin", "Bernard") });
 	}
@@ -26,13 +23,11 @@ public class SecuredUserService implements UserService {
 	@Override
 	@Secured("ROLE_ADMIN")
 	public void save(User user) {
-		Authentication authentication = SecurityContextHolder.getContext()
-				.getAuthentication();
-		log.info("Saved {}", authentication);
+		log.info("Saving worked");
 	}
 
 	@Override
-	@Secured("ROLE_USER")
+	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	public User getByName(String name) {
 		return new User("Mr", name, "auto");
 	}
