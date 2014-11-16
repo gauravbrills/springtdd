@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class SecuredUserService implements UserService {
 
 	@Override
-	@Secured("ROLE_USER")
+	@PreAuthorize("authenticated")
 	public List<User> getAllUsers() {
 		return Arrays.asList(new User[] { new User("Mr", "Kevin", "Bernard") });
 	}

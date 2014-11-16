@@ -18,14 +18,14 @@
 		<log4j-slf4j.version>2.0</log4j-slf4j.version>
 		<mockito.version>1.10.8</mockito.version>
 		<slf4j-log4j12-version>1.7.5</slf4j-log4j12-version>
+		<spring.security.version>4.0.0.M1</spring.security.version>
 	</properties>
 
 	<!-- Repositories -->
 	<repositories>
 		<repository>
-			<id>springsource-repo</id>
-			<name>SpringSource Repository</name>
-			<url>http://repo.springsource.org/release</url>
+			<id>spring-snasphot</id>
+			<url>https://repo.spring.io/libs-snapshot</url>
 		</repository>
 	</repositories>
 
@@ -101,6 +101,22 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<version>${spring.security.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
