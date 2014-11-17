@@ -1,0 +1,34 @@
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="base" template="/WEB-INF/tiles/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/tiles/common/header.jsp" />        
+        <put-attribute name="meta" value="/WEB-INF/tiles/common/meta.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/common/footer.jsp" />
+        <put-attribute name="title" value="Kein Titel vergeben!" />
+    </definition>
+
+   
+    <definition name="index" extends="base">
+        <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+    </definition>    
+    
+    <definition name="helloform" extends="base">
+        <put-attribute name="body" value="/WEB-INF/views/helloform.jsp" />
+    </definition>    
+    
+    <definition name="sayhello/*" extends="base">
+        <put-attribute name="title" value="überschrieben" />
+        <put-attribute name="body" value="/WEB-INF/views/hello.jsp" />
+    </definition>  
+    
+    <definition name="login/*" extends="base">
+        <put-attribute name="body" value="/WEB-INF/views/login/{1}.jsp" />
+    </definition>
+    
+    <definition name="*/*" extends="base">
+        <put-attribute name="body" value="/WEB-INF/tiles/body.jsp" />
+    </definition>      
+
+</tiles-definitions>
