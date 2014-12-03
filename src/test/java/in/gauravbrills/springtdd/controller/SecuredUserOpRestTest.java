@@ -115,6 +115,14 @@ public class SecuredUserOpRestTest {
 				status().isUnauthorized());
 	}
 
+	@Test
+	public void testGetByNameUsingWithCorrectAuth() throws Exception {
+		this.mockMvc.perform(
+				get("/sec/users/{name}", "John").with(
+						httpBasic("admin", "password"))).andExpect(
+				status().isOk());
+	}
+
 	/**
 	 * Test save user.
 	 * 

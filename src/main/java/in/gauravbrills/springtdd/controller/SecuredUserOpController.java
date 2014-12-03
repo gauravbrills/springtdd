@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
@@ -50,6 +52,11 @@ public class SecuredUserOpController {
 	public User getByName(
 			@PathVariable String name,
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User userPr) {
+		// public void info(String format, Object... arguments);
+		log.info("User Searched {} ,Principal : {}", name, userPr.getUsername());
+		// Using Formatter
+		Logger formatterLogger = LogManager.getFormatterLogger("in.gauravbrills.springtdd");
+		formatterLogger.info("Logged in User %s",userPr.getUsername());
 		return userService.getByName(name);
 
 	}
