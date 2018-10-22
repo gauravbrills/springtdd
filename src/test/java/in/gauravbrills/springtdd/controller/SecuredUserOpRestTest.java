@@ -10,15 +10,11 @@ package in.gauravbrills.springtdd.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import in.gauravbrills.springtdd.model.User;
-import in.gauravbrills.springtdd.spring.RestConfig;
-import in.gauravbrills.springtdd.spring.SecurityConfig;
 
 import java.nio.charset.Charset;
 
@@ -38,6 +34,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import in.gauravbrills.springtdd.model.Person;
+import in.gauravbrills.springtdd.spring.RestConfig;
+import in.gauravbrills.springtdd.spring.SecurityConfig;
 
 /**
  * The Class UserOpRestTest.
@@ -59,8 +59,7 @@ public class SecuredUserOpRestTest {
 	private MockMvc mockMvc;
 
 	/** The content type. */
-	private MediaType contentType = new MediaType(
-			MediaType.APPLICATION_JSON.getType(),
+	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("UTF-8"));
 
 	/**
@@ -68,7 +67,7 @@ public class SecuredUserOpRestTest {
 	 */
 	@Before
 	public void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)//
 				.addFilters(springSecurityFilterChain).build();
 	}
 
@@ -80,8 +79,7 @@ public class SecuredUserOpRestTest {
 	 */
 	@Test
 	public void testListUsersAuthFail() throws Exception {
-		this.mockMvc.perform(get("/sec/users")).andExpect(
-				status().isUnauthorized());
+		this.mockMvc.perform(get("/sec/users")).andExpect(status().isUnauthorized());
 	}
 
 	/**
@@ -93,11 +91,10 @@ public class SecuredUserOpRestTest {
 	@Test
 	public void testListUsers() throws Exception {
 		this.mockMvc
-				.perform(get("/sec/users").with(httpBasic("user", "password")))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$", hasSize(1)))
-				.andExpect(jsonPath("$[0].name", is("Kevin")))
+				.perform(get("/sec/users")//
+						.with(httpBasic("user", "password")))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].name", is("Kevin")))
 				.andExpect(jsonPath("$[0].surname", is("Bernard")));
 	}
 
@@ -109,18 +106,16 @@ public class SecuredUserOpRestTest {
 	 */
 	@Test
 	public void testGetByNameUsingWith() throws Exception {
-		this.mockMvc.perform(
-				get("/sec/users/{name}", "John").with(
-						user("user").password("password"))).andExpect(
-				status().isUnauthorized());
+		this.mockMvc
+				.perform(get("/sec/users/{name}", "John")//
+						.with(httpBasic("user", "password1")))//
+				.andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	public void testGetByNameUsingWithCorrectAuth() throws Exception {
-		this.mockMvc.perform(
-				get("/sec/users/{name}", "John").with(
-						httpBasic("admin", "password"))).andExpect(
-				status().isOk());
+		this.mockMvc.perform(get("/sec/users/{name}", "John").with(httpBasic("admin", "password")))
+				.andExpect(status().isOk());
 	}
 
 	/**
@@ -132,23 +127,21 @@ public class SecuredUserOpRestTest {
 	@Test
 	public void testSaveUser() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
-		User user = new User("Mr", "John", "Doe");
+		Person user = new Person("Mr", "John", "Doe");
 		String body = mapper.writeValueAsString(user);
-		this.mockMvc.perform(
-				post("/sec/users").contentType(contentType).content(body)
-						.with(httpBasic("admin", "password"))).andExpect(
-				status().isOk());
+		this.mockMvc
+				.perform(post("/sec/users").contentType(contentType)//
+						.content(body).with(httpBasic("admin", "password")))//
+				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void testSaveUserWrngPass() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
-		User user = new User("Mr", "John", "Doe");
+		Person user = new Person("Mr", "John", "Doe");
 		String body = mapper.writeValueAsString(user);
-		this.mockMvc.perform(
-				post("/sec/users").contentType(contentType).content(body)
-						.with(httpBasic("admin", "a"))).andExpect(
-				status().isUnauthorized());
+		this.mockMvc.perform(post("/sec/users").contentType(contentType).content(body).with(httpBasic("admin", "a")))
+				.andExpect(status().isUnauthorized());
 	}
 
 	/**
@@ -160,11 +153,10 @@ public class SecuredUserOpRestTest {
 	@Test
 	public void testSaveUser_failedvalidation() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
-		User user = new User(null, "John", "Doe");
+		Person user = new Person(null, "John", "Doe");
 		String body = mapper.writeValueAsString(user);
-		this.mockMvc.perform(
-				post("/sec/users").contentType(contentType).content(body)
-						.with(httpBasic("admin", "password"))).andExpect(
-				status().isBadRequest());
+		this.mockMvc
+				.perform(post("/sec/users").contentType(contentType).content(body).with(httpBasic("admin", "password")))
+				.andExpect(status().isBadRequest());
 	}
 }

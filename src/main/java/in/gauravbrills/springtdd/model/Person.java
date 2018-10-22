@@ -3,8 +3,9 @@
  */
 package in.gauravbrills.springtdd.model;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,12 +18,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-	@NotEmpty
-	@Length(max = 4)
+public class Person {
+	@NotBlank
+	@Size(max = 4)
 	private String title;
-	@NotEmpty
+	@NotBlank
 	private String name;
-	@NotEmpty
+	@NotBlank
 	private String surname;
 }

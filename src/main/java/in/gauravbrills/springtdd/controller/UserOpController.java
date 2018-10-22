@@ -1,8 +1,5 @@
 package in.gauravbrills.springtdd.controller;
 
-import in.gauravbrills.springtdd.model.User;
-import in.gauravbrills.springtdd.service.UserService;
-
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.gauravbrills.springtdd.model.Person;
+import in.gauravbrills.springtdd.service.UserService;
+
 @RestController
 @RequestMapping("/users")
 public class UserOpController {
@@ -22,19 +22,19 @@ public class UserOpController {
 	UserService userService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<User> listUsers() {
+	public List<Person> listUsers() {
 		return userService.getAllUsers();
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	@ResponseStatus(value=HttpStatus.OK)
-	public void insertUser(@Valid @RequestBody User user) {
+	@ResponseStatus(value = HttpStatus.OK)
+	public void insertUser(@Valid @RequestBody Person user) {
 		userService.save(user);
 	}
 
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
-	public User getByName(@PathVariable String name) {
+	public Person getByName(@PathVariable String name) {
 		return userService.getByName(name);
 	}
 }

@@ -7,7 +7,7 @@
  */
 package in.gauravbrills.springtdd.service;
 
-import in.gauravbrills.springtdd.model.User;
+import in.gauravbrills.springtdd.model.Person;
 
 import java.util.List;
 
@@ -21,14 +21,14 @@ public interface UserService {
 	 *
 	 * @return the all users
 	 */
-	List<User> getAllUsers();
+	List<Person> getAllUsers();
 
 	/**
 	 * Save.
 	 *
 	 * @param user the user
 	 */
-	void save(User user);
+	void save(Person user);
 
 	/**
 	 * Gets the by name.
@@ -36,6 +36,6 @@ public interface UserService {
 	 * @param name the name
 	 * @return the by name
 	 */
-	User getByName(String name);
+	Person getByName(String name);
 
 }

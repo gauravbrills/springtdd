@@ -16,8 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import in.gauravbrills.springtdd.controller.form.Login;
-import in.gauravbrills.springtdd.spring.SpringConfig;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +28,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import in.gauravbrills.springtdd.controller.form.Login;
+import in.gauravbrills.springtdd.spring.SpringConfig;
 
 /**
  * The Class LoginTestIntegration.
@@ -62,8 +62,7 @@ public class LoginTestIntegration {
 	 */
 	@Test
 	public void testLogin() throws Exception {
-		this.mockMvc.perform(get("/login.html")).andExpect(status().isOk())
-				.andExpect(view().name("login/form"))
+		this.mockMvc.perform(get("/login.html")).andExpect(status().isOk()).andExpect(view().name("login/form"))
 				.andExpect(model().attribute("login", any(Login.class)));
 	}
 
@@ -78,12 +77,8 @@ public class LoginTestIntegration {
 		String username = "rudi";
 		String password = "fake";
 
-		this.mockMvc
-				.perform(
-						post("/login.html").param("username", username).param(
-								"password", password))
-				.andExpect(status().isOk())
-				.andExpect(view().name("login/failed"));
+		this.mockMvc.perform(post("/login.html").param("username", username).param("password", password))
+				.andExpect(status().isOk()).andExpect(view().name("login/failed"));
 	}
 
 	/**
@@ -94,19 +89,11 @@ public class LoginTestIntegration {
 	 */
 	@Test
 	public void testPerformLogin() throws Exception {
-		this.mockMvc
-				.perform(
-						post("/login.html").param("username", "rudi").param(
-								"password", "ratlos"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("login/welcome"))
+		this.mockMvc.perform(post("/login.html").param("username", "rudi").param("password", "ratlos"))
+				.andExpect(status().isOk()).andExpect(view().name("login/welcome"))
 				.andExpect(model().attributeExists("currentuser"))
-				.andExpect(
-						request().sessionAttribute("currentuser",
-								hasProperty("username", is("rudi"))))
-				.andExpect(
-						request().sessionAttribute("currentuser",
-								hasProperty("password", is("ratlos"))));
+				.andExpect(request().sessionAttribute("currentuser", hasProperty("username", is("rudi"))))
+				.andExpect(request().sessionAttribute("currentuser", hasProperty("password", is("ratlos"))));
 	}
 
 }

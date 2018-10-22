@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import in.gauravbrills.springtdd.model.User;
+import in.gauravbrills.springtdd.model.Person;
 import in.gauravbrills.springtdd.service.UserService;
 
 import java.nio.charset.Charset;
@@ -60,8 +60,7 @@ public class UserOpRestTest {
 	@InjectMocks
 	private UserOpController opController;
 
-	private MediaType contentType = new MediaType(
-			MediaType.APPLICATION_JSON.getType(),
+	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("UTF-8"));
 
 	/**
@@ -72,21 +71,17 @@ public class UserOpRestTest {
 		// Initalizes Mockito
 		MockitoAnnotations.initMocks(this);
 		// Builds Mock Controllers for Spring Mvc
-		this.mockMvc = MockMvcBuilders.standaloneSetup(opController)
-				.setMessageConverters(getMessageConv()).build();
+		this.mockMvc = MockMvcBuilders.standaloneSetup(opController).setMessageConverters(getMessageConv()).build();
 	}
 
 	private HttpMessageConverter<?> getMessageConv() {
 		final ClassLoader classLoader = getClass().getClassLoader();
 		MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = null;
-		if (ClassUtils.isPresent("com.fasterxml.jackson.databind.ObjectMapper",
-				classLoader)) {
+		if (ClassUtils.isPresent("com.fasterxml.jackson.databind.ObjectMapper", classLoader)) {
 			jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-			jackson2HttpMessageConverter.getObjectMapper().disable(
-					DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			jackson2HttpMessageConverter.getObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			// Json Pretty Formatting
-			jackson2HttpMessageConverter.getObjectMapper().enable(
-					SerializationFeature.INDENT_OUTPUT);
+			jackson2HttpMessageConverter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 		}
 		return jackson2HttpMessageConverter;
 	}
@@ -99,53 +94,42 @@ public class UserOpRestTest {
 	 */
 	@Test
 	public void testListUsers() throws Exception {
-		List<User> users = Arrays.asList(new User[] {
-				new User("Mr", "John", "Doe"),
-				new User("Mr", "Jimm", "Kendrick") });
+		List<Person> users = Arrays
+				.asList(new Person[] { new Person("Mr", "John", "Doe"), new Person("Mr", "Jimm", "Kendrick") });
 		Mockito.when(userService.getAllUsers()).thenReturn(users);
 
-		this.mockMvc.perform(get("/users")).andExpect(status().isOk())
-				.andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$", hasSize(2)))
-				.andExpect(jsonPath("$[1].name", is("Jimm")))
+		this.mockMvc.perform(get("/users")).andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$", hasSize(2))).andExpect(jsonPath("$[1].name", is("Jimm")))
 				.andExpect(jsonPath("$[0].surname", is("Doe")));
 	}
 
 	@Test
 	public void testGetByName() throws Exception {
-		User user = new User("Mr", "John", "Doe");
+		Person user = new Person("Mr", "John", "Doe");
 		Mockito.when(userService.getByName("John")).thenReturn(user);
 
-		this.mockMvc.perform(get("/users/{name}", "John"))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$.name", is("John")))
+		this.mockMvc.perform(get("/users/{name}", "John")).andExpect(status().isOk())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.name", is("John")))
 				.andExpect(jsonPath("$.title", is("Mr"))).andDo(print());
 	}
 
 	@Test
 	public void testSaveUser() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
-		User user = new User("Mr", "John", "Doe");
+		Person user = new Person("Mr", "John", "Doe");
 		Mockito.doNothing().when(userService).save(user);
 		String body = mapper.writeValueAsString(user);
-		this.mockMvc
-				.perform(
-						post("/users").contentType(contentType)
-								.content(body)).andExpect(status().isOk())
+		this.mockMvc.perform(post("/users").contentType(contentType).content(body)).andExpect(status().isOk())
 				.andDo(print());
 	}
-	
+
 	@Test
 	public void testSaveUser_failedvalidation() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
-		User user = new User(null, "John", "Doe");
+		Person user = new Person(null, "John", "Doe");
 		Mockito.doNothing().when(userService).save(user);
 		String body = mapper.writeValueAsString(user);
-		this.mockMvc
-				.perform(
-						post("/users").contentType(contentType)
-								.content(body)).andExpect(status().isBadRequest())
-				.andDo(print());
+		this.mockMvc.perform(post("/users").contentType(contentType).content(body))//
+				.andDo(print()).andExpect(status().isBadRequest());
 	}
 }

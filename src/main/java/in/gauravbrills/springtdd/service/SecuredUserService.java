@@ -1,6 +1,6 @@
 package in.gauravbrills.springtdd.service;
 
-import in.gauravbrills.springtdd.model.User;
+import in.gauravbrills.springtdd.model.Person;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,20 +17,20 @@ public class SecuredUserService implements UserService {
 
 	@Override
 	@PreAuthorize("authenticated")
-	public List<User> getAllUsers() {
-		return Arrays.asList(new User[] { new User("Mr", "Kevin", "Bernard") });
+	public List<Person> getAllUsers() {
+		return Arrays.asList(new Person[] { new Person("Mr", "Kevin", "Bernard") });
 	}
 
 	@Override
 	@Secured("ROLE_ADMIN")
-	public void save(User user) {
+	public void save(Person user) {
 		log.info("Saving worked");
 	}
 
 	@Override
 	@Secured({"ROLE_USER","ROLE_ADMIN"})
-	public User getByName(String name) {
-		return new User("Mr", name, "auto");
+	public Person getByName(String name) {
+		return new Person("Mr", name, "auto");
 	}
 
 }

@@ -7,8 +7,9 @@
  */
 package in.gauravbrills.springtdd.controller.form;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * The Class Hello.
@@ -16,8 +17,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Hello {
 
 	/** The name. */
-	@NotEmpty
-	@Length(max = 100)
+	@NotBlank
+	@Size(max = 100)
 	private String name;
 
 	/**
