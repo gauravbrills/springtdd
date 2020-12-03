@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>5.3.7.Final</hibernate.version>
 		<org.projectlombok.version>1.18.2</org.projectlombok.version>
-		<log4j2.version>2.0-rc2</log4j2.version>
+		<log4j2.version>2.13.3</log4j2.version>
 		<log4j-slf4j.version>2.0</log4j-slf4j.version>
 		<mockito.version>1.10.8</mockito.version>
 		<slf4j-log4j12-version>1.7.5</slf4j-log4j12-version>
