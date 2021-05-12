@@ -18,7 +18,7 @@
 		<log4j-slf4j.version>2.0</log4j-slf4j.version>
 		<mockito.version>1.10.8</mockito.version>
 		<slf4j-log4j12-version>1.7.5</slf4j-log4j12-version>
-		<spring.security.version>5.1.1.RELEASE</spring.security.version>
+		<spring.security.version>5.2.10.RELEASE</spring.security.version>
 	</properties>
 
 	<!-- Repositories -->
