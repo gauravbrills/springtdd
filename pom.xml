@@ -12,7 +12,7 @@
 		<spring.version>5.3.1</spring.version>
 		<jdk.version>1.8</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<hibernate.version>5.3.7.Final</hibernate.version>
+		<hibernate.version>5.4.24.Final</hibernate.version>
 		<org.projectlombok.version>1.18.2</org.projectlombok.version>
 		<log4j2.version>2.17.1</log4j2.version>
 		<log4j-slf4j.version>2.0</log4j-slf4j.version>
